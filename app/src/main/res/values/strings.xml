@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">GreenFitApp</string>
+    <string name="header_title">GreenFit</string>
+    <string name="memberships">Memberships</string>
+    <string name="classes">Classes</string>
+    <string name="locations">Locations</string>
+    <string name="title1">"Нова акція!"</string>
+    <string name="title2">"Графік на свята"</string>
+    <string name="title3">"Новий тренер!"</string>
+    <string name="title4">fdkskfkskfskfk</string>
+    <string name="newsContent1">Знижка на абонементи 20% тільки цього тижня.</string>
+    <string name="newsContent2">Ми працюємо без вихідних з 8:00 до 22:00..</string>
+    <string name="newsContent3">Знайомтесь з Артемом — спеціалістом з кросфіту.</string>
+    <string name="newsContent4">fdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfk</string>
+    <string name="homeButton">Home</string>
+    <string name="profileButton">My profile</string>
+</resources>
