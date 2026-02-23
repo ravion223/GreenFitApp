@@ -14,4 +14,10 @@
     <string name="newsContent4">fdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfk</string>
     <string name="homeButton">Home</string>
     <string name="profileButton">My profile</string>
+    <string name="buyButton">Buy</string>
+    <string name="silverTierDesc">Silver Tier - Essential comfort and everything you need for result. Unlimited access to the gym and cardio area. Unlocks access to basic group classes (Yoga, Pilates) and use of comfortable locker rooms with a sauna. An ideal start for those focused on strength training and maintaining fitness.</string>
+    <string name="goldTierDesc">Gold Tier - Expanded space for sports and recovery. Everything in Silver + Aqua Zone. Unlocks the 25-meter swimming pool and jacuzzi for muscle recovery. You also get the ability to book the basketball court or the indoor arena for team sports (futsal, volleyball) during designated hours. For those who love variety: lifting weights today, swimming or playing basketball with friends tomorrow.</string>
+    <string name="platinumTierDesc">Platinum Tier - Ultimate status and professional approach. Everything in Gold + Exclusive Zones. Unlocks the Crossfit zone and combat sports hall. Includes sessions with top-tier personal trainers, access to the VIP lounge with a complimentary fitness bar, and full use of the tennis courts. Athletes who want the full cycle — from high-intensity functional training to premium relaxation and tennis.</string>
+    <string name="monthly">Monthly:</string>
+    <string name="yearly">Yearly:</string>
 </resources>

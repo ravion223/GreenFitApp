@@ -36,25 +36,31 @@ import com.example.greenfitapp.data.NewsItem
 import com.example.greenfitapp.R
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onMembershipButtonClick: () -> Unit
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        GreenFitAppButtons()
+        GreenFitAppButtons(onMembershipButtonClick = onMembershipButtonClick)
         GreenFitAppGreetingText("Гість")
         GreenFitAppNews(modifier = Modifier.weight(1f))
     }
 }
 
 @Composable
-fun GreenFitAppButtons(modifier: Modifier = Modifier) {
+fun GreenFitAppButtons(
+    modifier: Modifier = Modifier,
+    onMembershipButtonClick: () -> Unit
+) {
     Column(
 
     ) {
         Button(
-            onClick = { /* ? */ },
+            onClick = { onMembershipButtonClick() },
             modifier = Modifier
                 .fillMaxWidth()
         ) {
