@@ -57,6 +57,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import com.example.greenfitapp.data.NewsItem
+import com.example.greenfitapp.screens.HomeScreen
+import com.example.greenfitapp.components.GreenFitFooter
+import com.example.greenfitapp.components.GreenFitHeader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,201 +101,14 @@ fun GreenFitMainApp(modifier: Modifier = Modifier) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                GreenFitAppButtons()
-                GreenFitAppGreetingText("Гість")
-
-                GreenFitAppNews(modifier = Modifier.weight(1f))
+            when(selectedItem) {
+                0 -> HomeScreen()
             }
         }
 
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun GreenFitHeader(modifier: Modifier = Modifier) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = stringResource(R.string.header_title),
-                color = Color(0xFF1b5e17)
-            )
-        },
-    )
-
-}
-
-@Composable
-fun GreenFitFooter(
-    selectedIndex: Int,
-    onTabSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-
-    NavigationBar(
-        modifier = modifier
-    ) {
-        NavigationBarItem(
-            selected = selectedIndex == 0,
-            onClick = { onTabSelected(0) },
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = stringResource(R.string.homeButton)
-                )
-               },
-            label = { Text(stringResource(R.string.homeButton)) },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.White,
-                indicatorColor = MaterialTheme.colorScheme.primary
-            )
-        )
-        NavigationBarItem(
-            selected = selectedIndex == 1,
-            onClick = { onTabSelected(1) },
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = stringResource(R.string.profileButton)
-                )
-            },
-            label = { Text(stringResource(R.string.profileButton)) },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.White,
-                indicatorColor = MaterialTheme.colorScheme.primary
-            )
-        )
-    }
-}
-
-@Composable
-fun GreenFitAppButtons(modifier: Modifier = Modifier) {
-    Column(
-
-    ) {
-        Button(
-            onClick = { /* ? */ },
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Icon(
-                imageVector = Icons.Default.CardMembership,
-                contentDescription = stringResource(R.string.memberships)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.memberships),
-                modifier = Modifier.padding(top=16.dp, bottom = 16.dp),
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row() {
-            Button(
-                onClick = { /* ? */ },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Schedule,
-                    contentDescription = stringResource(R.string.classes)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.classes),
-                    modifier = Modifier.padding(top=16.dp, bottom = 16.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Button(
-                onClick = { /* ? */ },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.LocationOn,
-                    contentDescription = stringResource(R.string.locations)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.locations),
-                    modifier = Modifier.padding(top=16.dp, bottom = 16.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun GreenFitAppGreetingText(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Привіт, $name",
-        style = MaterialTheme.typography.headlineMedium,
-        modifier = Modifier.padding(vertical = 16.dp)
-    )
-}
-
-@Composable
-fun NewsCard(title: String, newsContent: String, @DrawableRes imageId: Int?) {
-    Card(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column() {
-            if (imageId != null){
-                Image(
-                    painter = painterResource(imageId),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .height(150.dp)
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-            }
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(start = 8.dp)
-            )
-            Text(
-                text = newsContent,
-                modifier = Modifier.padding(start= 8.dp, end = 8.dp, bottom = 8.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun GreenFitAppNews(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "НОВИНИ",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 8.dp),
-        )
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f),
-            contentPadding = PaddingValues(bottom = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(newsList){ news ->
-                NewsCard(
-                    title = stringResource(news.title),
-                    newsContent = stringResource(news.newsContent),
-                    imageId = news.imageId
-                )
-            }
-        }
-    }
-}
 
 @Preview()
 @Composable
