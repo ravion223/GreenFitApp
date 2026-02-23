@@ -79,12 +79,18 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GreenFitMainApp(modifier: Modifier = Modifier) {
+
+    var selectedItem by remember { mutableStateOf(0) }
+
     Scaffold(
         topBar = {
             GreenFitHeader()
         },
         bottomBar = {
-            GreenFitFooter()
+            GreenFitFooter(
+                selectedIndex = selectedItem,
+                onTabSelected = { index -> selectedItem = index }
+            )
         }
     ) { innerPadding ->
         Box(
@@ -121,16 +127,18 @@ fun GreenFitHeader(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GreenFitFooter(modifier: Modifier = Modifier) {
-
-    var selectedItem by remember { mutableStateOf(0) }
+fun GreenFitFooter(
+    selectedIndex: Int,
+    onTabSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     NavigationBar(
         modifier = modifier
     ) {
         NavigationBarItem(
-            selected = selectedItem == 0,
-            onClick = { selectedItem = 0 },
+            selected = selectedIndex == 0,
+            onClick = { onTabSelected(0) },
             icon = {
                 Icon(
                     imageVector = Icons.Default.Home,
@@ -144,8 +152,8 @@ fun GreenFitFooter(modifier: Modifier = Modifier) {
             )
         )
         NavigationBarItem(
-            selected = selectedItem == 1,
-            onClick = { selectedItem = 1 },
+            selected = selectedIndex == 1,
+            onClick = { onTabSelected(1) },
             icon = {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
