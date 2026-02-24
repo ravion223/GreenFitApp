@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -121,29 +122,32 @@ fun GreenFitAppGreetingText(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun NewsCard(title: String, newsContent: String, @DrawableRes imageId: Int?) {
+fun NewsCard(newsItem: NewsItem) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column() {
-            if (imageId != null){
+            if (newsItem.imageId != null){
                 Image(
-                    painter = painterResource(imageId),
+                    painter = painterResource(newsItem.imageId),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
+                    alignment = Alignment.TopCenter,
                     modifier = Modifier
-                        .height(150.dp)
+                        .aspectRatio(16f / 9f)
                         .fillMaxWidth()
                         .padding(8.dp)
                 )
             }
             Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
+                text = stringResource(newsItem.title),
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(start = 8.dp)
             )
             Text(
-                text = newsContent,
+                text = stringResource(newsItem.newsContent),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start= 8.dp, end = 8.dp, bottom = 8.dp)
             )
         }
@@ -169,11 +173,7 @@ fun GreenFitAppNews(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(newsList){ news ->
-                NewsCard(
-                    title = stringResource(news.title),
-                    newsContent = stringResource(news.newsContent),
-                    imageId = news.imageId
-                )
+                NewsCard(news)
             }
         }
     }
