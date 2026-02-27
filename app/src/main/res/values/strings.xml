@@ -1,23 +1,43 @@
 <resources>
     <string name="app_name">GreenFitApp</string>
+
+<!--HomeScreen-->
     <string name="header_title">GreenFit</string>
     <string name="memberships">Memberships</string>
     <string name="classes">Classes</string>
     <string name="locations">Locations</string>
+    <string name="news">NEWS</string>
     <string name="title1">"Нова акція!"</string>
     <string name="title2">"Графік на свята"</string>
     <string name="title3">"Новий тренер!"</string>
     <string name="title4">fdkskfkskfskfk</string>
+    <string name="greeting">Hello</string>
     <string name="newsContent1">Знижка на абонементи 20% тільки цього тижня.</string>
     <string name="newsContent2">Ми працюємо без вихідних з 8:00 до 22:00..</string>
     <string name="newsContent3">Знайомтесь з Артемом — спеціалістом з кросфіту.</string>
     <string name="newsContent4">fdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfk</string>
     <string name="homeButton">Home</string>
     <string name="profileButton">My profile</string>
+
+<!--MembershipsScreen-->
     <string name="buyButton">Buy</string>
     <string name="silverTierDesc">Silver Tier - Essential comfort and everything you need for result. Unlimited access to the gym and cardio area. Unlocks access to basic group classes (Yoga, Pilates) and use of comfortable locker rooms with a sauna. An ideal start for those focused on strength training and maintaining fitness.</string>
     <string name="goldTierDesc">Gold Tier - Expanded space for sports and recovery. Everything in Silver + Aqua Zone. Unlocks the 25-meter swimming pool and jacuzzi for muscle recovery. You also get the ability to book the basketball court or the indoor arena for team sports (futsal, volleyball) during designated hours. For those who love variety: lifting weights today, swimming or playing basketball with friends tomorrow.</string>
     <string name="platinumTierDesc">Platinum Tier - Ultimate status and professional approach. Everything in Gold + Exclusive Zones. Unlocks the Crossfit zone and combat sports hall. Includes sessions with top-tier personal trainers, access to the VIP lounge with a complimentary fitness bar, and full use of the tennis courts. Athletes who want the full cycle — from high-intensity functional training to premium relaxation and tennis.</string>
     <string name="monthly">Monthly:</string>
     <string name="yearly">Yearly:</string>
+
+<!--GymLocationsScreen-->
+    <string name="location_arena_title">GreenFit Arena</string>
+    <string name="location_arena_address">12 Sports Ave.</string>
+    <string name="location_arena_desc">Our largest facility featuring professional Crossfit zones and mixed martial arts halls.</string>
+
+    <string name="location_studio_title">GreenFit Studio</string>
+    <string name="location_studio_address">5 Cozy St.</string>
+    <string name="location_studio_desc">A boutique studio designed for personal training and small group yoga sessions.</string>
+
+    <string name="location_central_title">GreenFit Central</string>
+    <string name="location_central_address">45 Victory Blvd.</string>
+    <string name="location_central_desc">Our flagship gym with a 25-meter swimming pool and an extensive aqua-recovery zone.</string>
+    <string name="location_header_format">%1$s • %2$.1f (%3$d reviews)</string>
 </resources>

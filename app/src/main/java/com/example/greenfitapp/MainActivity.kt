@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import com.example.greenfitapp.screens.HomeScreen
 import com.example.greenfitapp.components.GreenFitFooter
 import com.example.greenfitapp.components.GreenFitHeader
+import com.example.greenfitapp.screens.GymLocationsScreen
 import com.example.greenfitapp.screens.MembershipsScreen
 
 class MainActivity : ComponentActivity() {
@@ -65,9 +66,11 @@ fun GreenFitMainApp(modifier: Modifier = Modifier) {
         ) {
             when(selectedItem) {
                 0 -> HomeScreen(
-                    onMembershipButtonClick = { selectedItem = 1 }
+                    onMembershipButtonClick = { selectedItem = 1 },
+                    onLocationsButtonClick = { selectedItem = 2 }
                 )
                 1 -> MembershipsScreen()
+                2 -> GymLocationsScreen()
             }
         }
 

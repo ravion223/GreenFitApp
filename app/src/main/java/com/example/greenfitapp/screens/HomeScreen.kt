@@ -39,15 +39,19 @@ import com.example.greenfitapp.R
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onMembershipButtonClick: () -> Unit
+    onMembershipButtonClick: () -> Unit,
+    onLocationsButtonClick: () -> Unit
     ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        GreenFitAppButtons(onMembershipButtonClick = onMembershipButtonClick)
-        GreenFitAppGreetingText("Гість")
+        GreenFitAppButtons(
+            onMembershipButtonClick = onMembershipButtonClick,
+            onLocationsButtonClick = onLocationsButtonClick
+        )
+        GreenFitAppGreetingText("Rostyslav")
         GreenFitAppNews(modifier = Modifier.weight(1f))
     }
 }
@@ -55,7 +59,8 @@ fun HomeScreen(
 @Composable
 fun GreenFitAppButtons(
     modifier: Modifier = Modifier,
-    onMembershipButtonClick: () -> Unit
+    onMembershipButtonClick: () -> Unit,
+    onLocationsButtonClick: () -> Unit
 ) {
     Column(
 
@@ -95,7 +100,7 @@ fun GreenFitAppButtons(
             Spacer(modifier = Modifier.width(8.dp))
 
             Button(
-                onClick = { /* ? */ },
+                onClick = { onLocationsButtonClick() },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(
@@ -115,7 +120,7 @@ fun GreenFitAppButtons(
 @Composable
 fun GreenFitAppGreetingText(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Привіт, $name",
+        text = "${stringResource(R.string.greeting)}, $name",
         style = MaterialTheme.typography.headlineMedium,
         modifier = Modifier.padding(vertical = 16.dp)
     )
@@ -161,7 +166,7 @@ fun GreenFitAppNews(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "НОВИНИ",
+            text = stringResource(R.string.news),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = 8.dp),
         )

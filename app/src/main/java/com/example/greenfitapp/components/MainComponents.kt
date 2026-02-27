@@ -58,8 +58,8 @@ fun GreenFitFooter(
             )
         )
         NavigationBarItem(
-            selected = selectedIndex == 1,
-            onClick = { onTabSelected(1) },
+            selected = selectedIndex == 8,
+            onClick = { onTabSelected(8) },
             icon = {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
