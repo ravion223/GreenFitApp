@@ -23,6 +23,7 @@ import com.example.greenfitapp.components.GreenFitFooter
 import com.example.greenfitapp.components.GreenFitHeader
 import com.example.greenfitapp.screens.GymLocationsScreen
 import com.example.greenfitapp.screens.MembershipsScreen
+import com.example.greenfitapp.screens.WorkoutSessionsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,10 +68,12 @@ fun GreenFitMainApp(modifier: Modifier = Modifier) {
             when(selectedItem) {
                 0 -> HomeScreen(
                     onMembershipButtonClick = { selectedItem = 1 },
-                    onLocationsButtonClick = { selectedItem = 2 }
+                    onLocationsButtonClick = { selectedItem = 2 },
+                    onWorkoutSessionsButtonClick = { selectedItem = 3 }
                 )
                 1 -> MembershipsScreen()
                 2 -> GymLocationsScreen()
+                3 -> WorkoutSessionsScreen()
             }
         }
 

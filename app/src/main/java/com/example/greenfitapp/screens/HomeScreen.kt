@@ -40,7 +40,8 @@ import com.example.greenfitapp.R
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onMembershipButtonClick: () -> Unit,
-    onLocationsButtonClick: () -> Unit
+    onLocationsButtonClick: () -> Unit,
+    onWorkoutSessionsButtonClick: () -> Unit,
     ) {
     Column(
         modifier = Modifier
@@ -49,7 +50,8 @@ fun HomeScreen(
     ) {
         GreenFitAppButtons(
             onMembershipButtonClick = onMembershipButtonClick,
-            onLocationsButtonClick = onLocationsButtonClick
+            onLocationsButtonClick = onLocationsButtonClick,
+            onWorkoutSessionsButtonClick = onWorkoutSessionsButtonClick
         )
         GreenFitAppGreetingText("Rostyslav")
         GreenFitAppNews(modifier = Modifier.weight(1f))
@@ -60,7 +62,8 @@ fun HomeScreen(
 fun GreenFitAppButtons(
     modifier: Modifier = Modifier,
     onMembershipButtonClick: () -> Unit,
-    onLocationsButtonClick: () -> Unit
+    onLocationsButtonClick: () -> Unit,
+    onWorkoutSessionsButtonClick: () -> Unit,
 ) {
     Column(
 
@@ -83,7 +86,7 @@ fun GreenFitAppButtons(
         Spacer(modifier = Modifier.height(8.dp))
         Row() {
             Button(
-                onClick = { /* ? */ },
+                onClick = { onWorkoutSessionsButtonClick() },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(

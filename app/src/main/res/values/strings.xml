@@ -40,4 +40,33 @@
     <string name="location_central_address">45 Victory Blvd.</string>
     <string name="location_central_desc">Our flagship gym with a 25-meter swimming pool and an extensive aqua-recovery zone.</string>
     <string name="location_header_format">%1$s • %2$.1f (%3$d reviews)</string>
+
+<!--WorkoutSessionScreen-->
+    <string name="workout_yoga_title">Hatha Yoga Flow</string>
+    <string name="workout_crossfit_title">High Intensity Crossfit</string>
+    <string name="workout_swimming_title">Advanced Swimming</string>
+    <string name="workout_pilates_title">Core Strength Pilates</string>
+    <string name="workout_boxing_title">Boxing Foundation</string>
+
+    <string name="trainer_anna">Anna Sterling</string>
+    <string name="trainer_mark">Mark Thorne</string>
+    <string name="trainer_olena">Elena Vance</string>
+    <string name="trainer_david">David Stone</string>
+
+    <string name="label_trainer">Trainer:</string>
+    <string name="label_start">Starts at %1$s</string>
+    <string name="label_duration">Duration: %1$d min</string>
+    <string name="label_slots_available">Slots: %1$d / %2$d</string>
+    <string name="button_join">Join Session</string>
+    <string name="status_full">Session Full</string>
+    <string name="label_apply">Apply</string>
+    <string name="full_slots">Full</string>
+
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+    <string name="day_sunday">Sunday</string>
 </resources>
