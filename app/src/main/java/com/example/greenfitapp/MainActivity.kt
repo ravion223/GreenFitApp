@@ -24,6 +24,7 @@ import com.example.greenfitapp.components.GreenFitHeader
 import com.example.greenfitapp.screens.GymLocationsScreen
 import com.example.greenfitapp.screens.MembershipsScreen
 import com.example.greenfitapp.screens.WorkoutSessionsScreen
+import com.example.greenfitapp.screens.auth.AuthScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,35 +49,40 @@ class MainActivity : ComponentActivity() {
 fun GreenFitMainApp(modifier: Modifier = Modifier) {
 
     var selectedItem by remember { mutableStateOf(0) }
+    var showLogin by remember { mutableStateOf(true) }
 
-    Scaffold(
-        topBar = {
-            GreenFitHeader()
-        },
-        bottomBar = {
-            GreenFitFooter(
-                selectedIndex = selectedItem,
-                onTabSelected = { index -> selectedItem = index }
-            )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            when(selectedItem) {
-                0 -> HomeScreen(
-                    onMembershipButtonClick = { selectedItem = 1 },
-                    onLocationsButtonClick = { selectedItem = 2 },
-                    onWorkoutSessionsButtonClick = { selectedItem = 3 }
+    if (showLogin) {
+        AuthScreen(onAuthSuccess = { showLogin = false })
+    } else {
+        Scaffold(
+            topBar = {
+                GreenFitHeader()
+            },
+            bottomBar = {
+                GreenFitFooter(
+                    selectedIndex = selectedItem,
+                    onTabSelected = { index -> selectedItem = index }
                 )
-                1 -> MembershipsScreen()
-                2 -> GymLocationsScreen()
-                3 -> WorkoutSessionsScreen()
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+            ) {
+                when (selectedItem) {
+                    0 -> HomeScreen(
+                        onMembershipButtonClick = { selectedItem = 1 },
+                        onLocationsButtonClick = { selectedItem = 2 },
+                        onWorkoutSessionsButtonClick = { selectedItem = 3 }
+                    )
+
+                    1 -> MembershipsScreen()
+                    2 -> GymLocationsScreen()
+                    3 -> WorkoutSessionsScreen()
+                }
             }
         }
-
     }
 }
 

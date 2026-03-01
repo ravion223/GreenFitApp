@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import com.example.greenfitapp.data.NewsItem
 import com.example.greenfitapp.R
+import com.example.greenfitapp.data.auth.AuthManager
 
 @Composable
 fun HomeScreen(
@@ -43,6 +44,7 @@ fun HomeScreen(
     onLocationsButtonClick: () -> Unit,
     onWorkoutSessionsButtonClick: () -> Unit,
     ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +55,7 @@ fun HomeScreen(
             onLocationsButtonClick = onLocationsButtonClick,
             onWorkoutSessionsButtonClick = onWorkoutSessionsButtonClick
         )
-        GreenFitAppGreetingText("Rostyslav")
+        GreenFitAppGreetingText("${AuthManager.getCurrentUserName() ?: "Athlete"} ")
         GreenFitAppNews(modifier = Modifier.weight(1f))
     }
 }

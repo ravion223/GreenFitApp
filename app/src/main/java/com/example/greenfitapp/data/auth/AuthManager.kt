@@ -2,18 +2,31 @@ package com.example.greenfitapp.data.auth
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
+import com.google.firebase.auth.userProfileChangeRequest
 
 
-class AuthManager {
+object AuthManager {
     private val auth: FirebaseAuth = Firebase.auth
 
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
 
-    fun signUp(email: String, password: String, onComplete: (Boolean) -> Unit) {
+    fun signUp(email: String, password: String, userName: String, onComplete: (Boolean) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                onComplete(task.isSuccessful)
+                if (task.isSuccessful){
+                    val profileUpdates = userProfileChangeRequest {
+                        displayName = userName
+                    }
+
+                    auth.currentUser?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { profileTask ->
+                            onComplete(profileTask.isSuccessful)
+                        }
+                } else {
+                    onComplete(false)
+                }
             }
     }
 
@@ -26,5 +39,9 @@ class AuthManager {
 
     fun logout(){
         auth.signOut()
+    }
+
+    fun getCurrentUserName(): String? {
+        return auth.currentUser?.displayName
     }
 }

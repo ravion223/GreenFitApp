@@ -69,4 +69,15 @@
     <string name="day_friday">Friday</string>
     <string name="day_saturday">Saturday</string>
     <string name="day_sunday">Sunday</string>
+
+<!--AuthScreen-->
+    <string name="email_label">Email:</string>
+    <string name="password_label">Password:</string>
+    <string name="username_label">Your name:</string>
+    <string name="sign_in_text">Sign In</string>
+    <string name="sign_up_text">Join GreenFit</string>
+    <string name="register_redirect">Dont have an account yet? Sign up</string>
+    <string name="login_redirect">Already have an account? Sign in</string>
+    <string name="auth_error_message">Invalid email or password.</string>
+
 </resources>
