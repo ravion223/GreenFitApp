@@ -12,6 +12,8 @@ object AuthManager {
 
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
 
+    fun getCurrentUser() = auth.currentUser
+
     fun signUp(email: String, password: String, userName: String, onComplete: (Boolean) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->

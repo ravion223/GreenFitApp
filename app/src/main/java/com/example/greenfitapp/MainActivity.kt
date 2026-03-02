@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import com.example.greenfitapp.screens.HomeScreen
 import com.example.greenfitapp.components.GreenFitFooter
 import com.example.greenfitapp.components.GreenFitHeader
+import com.example.greenfitapp.data.auth.AuthManager
 import com.example.greenfitapp.screens.GymLocationsScreen
 import com.example.greenfitapp.screens.MembershipsScreen
 import com.example.greenfitapp.screens.WorkoutSessionsScreen
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
 fun GreenFitMainApp(modifier: Modifier = Modifier) {
 
     var selectedItem by remember { mutableStateOf(0) }
-    var showLogin by remember { mutableStateOf(true) }
+    var showLogin by remember { mutableStateOf(AuthManager.getCurrentUser() == null) }
 
     if (showLogin) {
         AuthScreen(onAuthSuccess = { showLogin = false })
