@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "506678908745",
+    "project_id": "greenfit-4025e",
+    "storage_bucket": "greenfit-4025e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506678908745:android:9554226216f61784cdec98",
+        "android_client_info": {
+          "package_name": "com.example.greenfitapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD92vIkPP5ECoZs_Zw9j6ZUh3h9gHYijHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
