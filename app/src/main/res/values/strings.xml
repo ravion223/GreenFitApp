@@ -78,10 +78,25 @@
     <string name="login_label">Welcome to GreenFit</string>
     <string name="sign_in_text">Sign In</string>
     <string name="sign_up_text">Join GreenFit</string>
-    <string name="register_redirect">Dont have an account yet? Sign up</string>
+    <string name="register_redirect">Don\'t have an account yet? Sign up</string>
     <string name="login_redirect">Already have an account? Sign in</string>
     <string name="auth_error_message">Invalid email or password.</string>
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
 
+<!--ProfileScreen-->
+    <string name="edit_username">Edit username</string>
+    <string name="memberships_label">Your membership:</string>
+    <string name="membership_empty">You don\'t have membership yet.</string>
+    <string name="membership_redirect">View memberships &amp; Join GreenFit</string>
+    <string name="classes_label">Your classes:</string>
+    <string name="upcoming_tab">Upcoming</string>
+    <string name="history_tab">History</string>
+    <string name="no_classes_yet">No classes yet.</string>
+    <string name="book_first_class">Book your first class</string>
+    <string name="signout_button">Logout</string>
+    <string name="dialog_logout_title">Confirm Logout</string>
+    <string name="dialog_logout_text">You will need to sign in again to access your fitness data.</string>
+    <string name="confirm_logout_button">Yes, Logout</string>
+    <string name="dismiss_logout_button">No, go back</string>
 </resources>

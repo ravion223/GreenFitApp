@@ -1,9 +1,11 @@
 package com.example.greenfitapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,10 +26,12 @@ import com.example.greenfitapp.components.GreenFitHeader
 import com.example.greenfitapp.data.auth.AuthManager
 import com.example.greenfitapp.screens.GymLocationsScreen
 import com.example.greenfitapp.screens.MembershipsScreen
+import com.example.greenfitapp.screens.ProfileScreen
 import com.example.greenfitapp.screens.WorkoutSessionsScreen
 import com.example.greenfitapp.screens.auth.AuthScreen
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -46,6 +50,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun GreenFitMainApp(modifier: Modifier = Modifier) {
 
@@ -81,6 +86,14 @@ fun GreenFitMainApp(modifier: Modifier = Modifier) {
                     1 -> MembershipsScreen()
                     2 -> GymLocationsScreen()
                     3 -> WorkoutSessionsScreen()
+                    4 -> ProfileScreen(
+                        onBuyMembershipClick = { selectedItem = 1 },
+                        onBookClassClick = { selectedItem = 3 },
+                        onConfirmation = {
+                            showLogin = true
+                            selectedItem = 0
+                        }
+                    )
                 }
             }
         }
@@ -88,6 +101,7 @@ fun GreenFitMainApp(modifier: Modifier = Modifier) {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview()
 @Composable
 fun GreetingPreview() {
