@@ -26,6 +26,12 @@
     <string name="platinumTierDesc">Platinum Tier - Ultimate status and professional approach. Everything in Gold + Exclusive Zones. Unlocks the Crossfit zone and combat sports hall. Includes sessions with top-tier personal trainers, access to the VIP lounge with a complimentary fitness bar, and full use of the tennis courts. Athletes who want the full cycle — from high-intensity functional training to premium relaxation and tennis.</string>
     <string name="monthly">Monthly:</string>
     <string name="yearly">Yearly:</string>
+    <string name="subscribe_button_sheet">Choose your plan</string>
+    <string name="one_month_sub">1 month</string>
+    <string name="one_year_sub">1 year</string>
+    <string name="purchase_success">Purchased successfully</string>
+    <string name="due_to">Active until:</string>
+    <string name="loading">Loading...</string>
 
 <!--GymLocationsScreen-->
     <string name="location_arena_title">GreenFit Arena</string>

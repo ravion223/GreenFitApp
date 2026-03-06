@@ -2,14 +2,17 @@ package com.example.greenfitapp.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +33,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,17 +42,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
 import com.example.greenfitapp.data.MembershipItem
+import com.example.greenfitapp.data.UserProfile
 import com.example.greenfitapp.data.WorkoutSession
 import com.example.greenfitapp.data.auth.AuthManager
+import com.example.greenfitapp.data.membershipList
 import com.example.greenfitapp.data.workoutSessionsList
 import com.example.greenfitapp.ui.theme.GreenFitAppTheme
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -100,31 +110,44 @@ fun ProfileUsername(){
         Icon(
             imageVector = Icons.Default.Edit,
             contentDescription = stringResource(R.string.edit_username),
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.primary
+            modifier = Modifier.size(22.dp),
+            tint = MaterialTheme.colorScheme.primary,
         )
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = AuthManager.getCurrentUserName() ?: "User",
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
 
 @Composable
 fun ProfileMemberships(onBuyMembershipClick: () -> Unit){
-    var userMembership by remember { mutableStateOf<MembershipItem?>(null) }
+    var userProfile by remember { mutableStateOf<UserProfile?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
+
+
+    LaunchedEffect(Unit) {
+        AuthManager.getUserProfile { profile ->
+            userProfile = profile
+            isLoading = false
+        }
+    }
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(8.dp)
     ) {
-        Text(
-            text = stringResource(R.string.memberships_label)
-        )
-        if (userMembership == null){
-            EmptyMembershipState(onBuyMembershipClick = onBuyMembershipClick)
-        }else{
-            MembershipCard(userMembership!!)
+
+        if (isLoading){
+            Text(stringResource(R.string.loading))
+        } else{
+            val activeMembership = membershipList.find { it.id == userProfile!!.activeMembershipId }
+            if (userProfile!!.activeMembershipId == null){
+                EmptyMembershipState(onBuyMembershipClick = onBuyMembershipClick)
+            }else{
+                ProfileMembershipCard(activeMembership!!, userProfile!!)
+            }
         }
     }
 }
@@ -134,7 +157,7 @@ fun EmptyMembershipState(onBuyMembershipClick: () -> Unit){
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
+            .padding(vertical = 8.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -171,7 +194,8 @@ fun ProfileClasses(onBookClassClick: () -> Unit){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.classes_label)
+            text = stringResource(R.string.classes_label),
+            style = MaterialTheme.typography.titleMedium
         )
         PrimaryTabRow(selectedTabIndex = state) {
             tabs.forEachIndexed { index, tab ->
@@ -210,20 +234,28 @@ fun ProfileClasses(onBookClassClick: () -> Unit){
 
 @Composable
 fun EmptyClassesState(onBookClassClick: () -> Unit){
-    Column(
+    ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(vertical = 8.dp)
     ) {
-        Text(
-            text = stringResource(R.string.no_classes_yet),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        TextButton(onClick = { onBookClassClick() }) {
-            Text(text = stringResource(R.string.book_first_class))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                text = stringResource(R.string.no_classes_yet),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            TextButton(onClick = { onBookClassClick() }) {
+                Text(text = stringResource(R.string.book_first_class))
+            }
         }
     }
+
 }
 
 @Composable
@@ -283,6 +315,39 @@ fun ConfirmLogoutDialog(
             }
         },
     )
+}
+
+@Composable
+fun ProfileMembershipCard(membership: MembershipItem, profile: UserProfile) {
+    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    val dateString = profile.membershipExpireDate?.let { formatter.format(Date(it))} ?: ""
+
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.memberships_label),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            Image(
+                painter = painterResource(membership.imageId),
+                contentDescription = null,
+                modifier = Modifier.size(256.dp)
+            )
+            Text(
+                text = "${stringResource(R.string.due_to)} ${dateString}",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
