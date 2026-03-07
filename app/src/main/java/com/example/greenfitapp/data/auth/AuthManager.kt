@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
@@ -121,6 +122,27 @@ object AuthManager {
             .document(uid)
             .update(updates)
             .addOnCompleteListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
+    }
+
+    fun bookClasses(
+        classId: Int,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val uid = auth.currentUser?.uid
+        if (uid == null){
+            onComplete(false)
+            return
+        }
+
+        db.collection("users")
+            .document(uid)
+            .update("bookedClassesIds", FieldValue.arrayUnion(classId))
+            .addOnSuccessListener {
                 onComplete(true)
             }
             .addOnFailureListener {

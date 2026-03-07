@@ -1,5 +1,6 @@
 package com.example.greenfitapp.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,12 +35,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
 import com.example.greenfitapp.data.WorkoutSession
+import com.example.greenfitapp.data.auth.AuthManager
 import com.example.greenfitapp.data.locationsList
 import com.example.greenfitapp.data.workoutSessionsList
 import com.example.greenfitapp.ui.theme.GreenFitAppTheme
@@ -47,6 +50,7 @@ import com.example.greenfitapp.ui.theme.GreenFitAppTheme
 @Composable
 fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
     var selectedId by remember { mutableStateOf<Int?>(null) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -78,7 +82,18 @@ fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
         LazyColumn() {
             val filteredList = if (selectedId == null) {workoutSessionsList}else{workoutSessionsList.filter { it.locationId == selectedId }}
             items(filteredList) { workout ->
-                WorkoutSessionCard(workout)
+                WorkoutSessionCard(
+                    workout,
+                    onApplyButtonClick = {
+                        AuthManager.bookClasses(
+                            workout.id,
+                        ){ success ->
+                            if (success){
+                                Toast.makeText(context, context.getText(R.string.success_apply_toast), Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    )
             }
         }
     }
@@ -87,6 +102,7 @@ fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
 @Composable
 fun WorkoutSessionCard(
     workoutSession: WorkoutSession,
+    onApplyButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val location = locationsList.find { it.id == workoutSession.locationId }
@@ -111,7 +127,7 @@ fun WorkoutSessionCard(
             IconText(Icons.Default.People, "${stringResource(R.string.label_slots_available , workoutSession.currentParticipants, workoutSession.maxParticipants)} ")
 
             if (workoutSession.maxParticipants != workoutSession.currentParticipants) {
-                Button(onClick = { /* Nothing */ }) {
+                Button(onClick = { onApplyButtonClick() }) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = modifier
@@ -165,19 +181,6 @@ fun IconText(
 @Composable
 fun WorkoutSessionCardPreview() {
     GreenFitAppTheme() {
-        WorkoutSessionCard(
-            WorkoutSession(
-                id = 1,
-                titleRes = R.string.workout_yoga_title,
-                trainerRes = R.string.trainer_anna,
-                locationId = 2,
-                startTime = "08:30 AM",
-                date = "Monday",
-                durationMinutes = 60,
-                maxParticipants = 12,
-                currentParticipants = 10,
-                imageId = R.drawable.greenfit_yoga
-            )
-        )
+
     }
 }

@@ -67,6 +67,7 @@
     <string name="status_full">Session Full</string>
     <string name="label_apply">Apply</string>
     <string name="full_slots">Full</string>
+    <string name="success_apply_toast">Applied successfully</string>
 
     <string name="day_monday">Monday</string>
     <string name="day_tuesday">Tuesday</string>
