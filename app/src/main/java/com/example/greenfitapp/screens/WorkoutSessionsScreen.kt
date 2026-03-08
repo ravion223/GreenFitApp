@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,15 +42,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
+import com.example.greenfitapp.data.WorkoutManager
 import com.example.greenfitapp.data.WorkoutSession
 import com.example.greenfitapp.data.auth.AuthManager
 import com.example.greenfitapp.data.locationsList
-import com.example.greenfitapp.data.workoutSessionsList
 import com.example.greenfitapp.ui.theme.GreenFitAppTheme
 
 @Composable
 fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
     var selectedId by remember { mutableStateOf<Int?>(null) }
+    var workoutSessionsList by remember { mutableStateOf<List<WorkoutSession>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
     val context = LocalContext.current
 
     Column(
@@ -79,21 +82,40 @@ fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
             }
         }
 
-        LazyColumn() {
-            val filteredList = if (selectedId == null) {workoutSessionsList}else{workoutSessionsList.filter { it.locationId == selectedId }}
-            items(filteredList) { workout ->
-                WorkoutSessionCard(
-                    workout,
-                    onApplyButtonClick = {
-                        AuthManager.bookClasses(
-                            workout.id,
-                        ){ success ->
-                            if (success){
-                                Toast.makeText(context, context.getText(R.string.success_apply_toast), Toast.LENGTH_SHORT).show()
+        LaunchedEffect(Unit){
+            WorkoutManager.getWorkouts { workoutSessions ->
+                workoutSessionsList = workoutSessions
+                isLoading = false
+            }
+        }
+
+        if(isLoading){
+            Text(stringResource(R.string.loading))
+        }else {
+            LazyColumn() {
+                val filteredList = if (selectedId == null) {
+                    workoutSessionsList
+                } else {
+                    workoutSessionsList.filter { it.locationId == selectedId }
+                }
+                items(filteredList) { workout ->
+                    WorkoutSessionCard(
+                        workout,
+                        onApplyButtonClick = {
+                            AuthManager.bookClasses(
+                                workout.id,
+                            ) { success ->
+                                if (success) {
+                                    Toast.makeText(
+                                        context,
+                                        context.getText(R.string.success_apply_toast),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                         }
-                    }
                     )
+                }
             }
         }
     }

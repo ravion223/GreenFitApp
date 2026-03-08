@@ -9,7 +9,7 @@ data class UserProfile(
 
     val activeMembershipId: Int? = null,
     val membershipExpireDate: Long? = null,
-    val bookedClassesIds: List<Int> = emptyList()
+    val bookedClassesIds: List<String> = emptyList()
 )
 
 fun calculateExpireDate(isYearly: Boolean): Long {

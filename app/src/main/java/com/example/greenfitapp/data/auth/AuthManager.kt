@@ -130,7 +130,7 @@ object AuthManager {
     }
 
     fun bookClasses(
-        classId: Int,
+        classId: String,
         onComplete: (Boolean) -> Unit
     ) {
         val uid = auth.currentUser?.uid
@@ -139,14 +139,16 @@ object AuthManager {
             return
         }
 
-        db.collection("users")
-            .document(uid)
-            .update("bookedClassesIds", FieldValue.arrayUnion(classId))
-            .addOnSuccessListener {
-                onComplete(true)
-            }
-            .addOnFailureListener {
-                onComplete(false)
-            }
+        val userRef = db.collection("users").document(uid)
+        val classRef = db.collection("classes").document(classId)
+
+        db.runBatch { batch ->
+            batch.update(userRef, "bookedClassesIds", FieldValue.arrayUnion(classId))
+            batch.update(classRef, "currentParticipants", FieldValue.increment(1))
+        }.addOnSuccessListener {
+            onComplete(true)
+        }.addOnFailureListener {
+            onComplete(false)
+        }
     }
 }

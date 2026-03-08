@@ -50,10 +50,10 @@ import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
 import com.example.greenfitapp.data.MembershipItem
 import com.example.greenfitapp.data.UserProfile
+import com.example.greenfitapp.data.WorkoutManager
 import com.example.greenfitapp.data.WorkoutSession
 import com.example.greenfitapp.data.auth.AuthManager
 import com.example.greenfitapp.data.membershipList
-import com.example.greenfitapp.data.workoutSessionsList
 import com.example.greenfitapp.ui.theme.GreenFitAppTheme
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -67,24 +67,49 @@ fun ProfileScreen(
         onBookClassClick: () -> Unit,
         onConfirmation: () -> Unit
     ){
+    var userProfile by remember { mutableStateOf<UserProfile?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
     var dialogState by remember { mutableStateOf(false) }
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.verticalScroll(rememberScrollState())
-    ) {
-        ProfilePicture()
-        ProfileUsername()
-        ProfileMemberships(onBuyMembershipClick = onBuyMembershipClick)
-        ProfileClasses(onBookClassClick = onBookClassClick)
-        SignOutButton(onLogoutClick = { dialogState = !dialogState})
 
+    LaunchedEffect(Unit) {
+        AuthManager.getUserProfile { profile ->
+            userProfile = profile
+            isLoading = false
+        }
     }
-    if (dialogState){
-        ConfirmLogoutDialog(
-            onDismissRequest = { dialogState = !dialogState },
-            onConfirmation = onConfirmation
-        )
+
+    if(isLoading){
+        Text(stringResource(R.string.loading))
+    }else{
+        val profile = userProfile
+        if (profile == null){
+            Text(stringResource(R.string.unknown))
+        }else{
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                ProfilePicture()
+                ProfileUsername()
+                ProfileMemberships(
+                    userProfile = profile,
+                    onBuyMembershipClick = onBuyMembershipClick
+                )
+                ProfileClasses(
+                    userProfile = profile,
+                    onBookClassClick = onBookClassClick
+                )
+                SignOutButton(onLogoutClick = { dialogState = !dialogState})
+
+            }
+            if (dialogState){
+                ConfirmLogoutDialog(
+                    onDismissRequest = { dialogState = !dialogState },
+                    onConfirmation = onConfirmation
+                )
+            }
+        }
     }
 }
 
@@ -122,32 +147,19 @@ fun ProfileUsername(){
 }
 
 @Composable
-fun ProfileMemberships(onBuyMembershipClick: () -> Unit){
-    var userProfile by remember { mutableStateOf<UserProfile?>(null) }
-    var isLoading by remember { mutableStateOf(true) }
-
-
-    LaunchedEffect(Unit) {
-        AuthManager.getUserProfile { profile ->
-            userProfile = profile
-            isLoading = false
-        }
-    }
-
+fun ProfileMemberships(
+    userProfile: UserProfile,
+    onBuyMembershipClick: () -> Unit
+){
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(8.dp)
     ) {
-
-        if (isLoading){
-            Text(stringResource(R.string.loading))
-        } else{
-            val activeMembership = membershipList.find { it.id == userProfile!!.activeMembershipId }
-            if (userProfile!!.activeMembershipId == null){
-                EmptyMembershipState(onBuyMembershipClick = onBuyMembershipClick)
-            }else{
-                ProfileMembershipCard(activeMembership!!, userProfile!!)
-            }
+        val activeMembership = membershipList.find { it.id == userProfile.activeMembershipId }
+        if (activeMembership == null){
+            EmptyMembershipState(onBuyMembershipClick = onBuyMembershipClick)
+        }else{
+            ProfileMembershipCard(activeMembership, userProfile)
         }
     }
 }
@@ -179,16 +191,23 @@ fun EmptyMembershipState(onBuyMembershipClick: () -> Unit){
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ProfileClasses(onBookClassClick: () -> Unit){
+fun ProfileClasses(
+    userProfile: UserProfile,
+    onBookClassClick: () -> Unit)
+{
     val today = LocalDate.now().toString()
+    var workoutSessionsList by remember { mutableStateOf<List<WorkoutSession>>((emptyList())) }
+    var isLoading by remember { mutableStateOf(true) }
 
-    val upcoming = workoutSessionsList.filter { it.date >= today }
-    val history = workoutSessionsList.filter { it.date < today }
+    LaunchedEffect(Unit) {
+        WorkoutManager.getUserWorkouts(userProfile.bookedClassesIds) { workoutSessions ->
+            workoutSessionsList = workoutSessions
+            isLoading = false
+        }
+    }
 
     var state by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(R.string.upcoming_tab), stringResource(R.string.history_tab))
-
-    var userClasses by remember { mutableStateOf<List<WorkoutSession>>(emptyList()) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -207,28 +226,33 @@ fun ProfileClasses(onBookClassClick: () -> Unit){
             }
         }
 
-        val filteredSessions = if(state == 0){upcoming}else{history}
-        if(userClasses.isEmpty()){
-            EmptyClassesState(onBookClassClick)
+        if (isLoading){
+            Text(stringResource(R.string.loading))
         }else{
-            filteredSessions.forEach { session ->
-                ElevatedCard(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly
+            val upcoming = workoutSessionsList.filter { it.date >= today }
+            val history = workoutSessionsList.filter { it.date < today }
+            val filteredSessions = if(state == 0){upcoming}else{history}
+            if(workoutSessionsList.isEmpty()){
+                EmptyClassesState(onBookClassClick)
+            }else{
+                filteredSessions.forEach { session ->
+                    ElevatedCard(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = stringResource(session.titleRes)
-                        )
-                        Text(
-                            text = session.date
-                        )
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Text(
+                                text = stringResource(session.titleRes)
+                            )
+                            Text(
+                                text = session.date
+                            )
+                        }
                     }
                 }
             }
         }
-
     }
 }
 
