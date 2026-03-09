@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,8 +19,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonDefaults
@@ -48,11 +52,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
+import com.example.greenfitapp.components.GreenFitLoadingScreen
+import com.example.greenfitapp.data.GymLocation
 import com.example.greenfitapp.data.MembershipItem
 import com.example.greenfitapp.data.UserProfile
 import com.example.greenfitapp.data.WorkoutManager
 import com.example.greenfitapp.data.WorkoutSession
 import com.example.greenfitapp.data.auth.AuthManager
+import com.example.greenfitapp.data.locationsList
 import com.example.greenfitapp.data.membershipList
 import com.example.greenfitapp.ui.theme.GreenFitAppTheme
 import java.text.SimpleDateFormat
@@ -79,7 +86,7 @@ fun ProfileScreen(
     }
 
     if(isLoading){
-        Text(stringResource(R.string.loading))
+        GreenFitLoadingScreen(modifier = Modifier.fillMaxSize())
     }else{
         val profile = userProfile
         if (profile == null){
@@ -210,7 +217,8 @@ fun ProfileClasses(
     val tabs = listOf(stringResource(R.string.upcoming_tab), stringResource(R.string.history_tab))
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = stringResource(R.string.classes_label),
@@ -227,7 +235,7 @@ fun ProfileClasses(
         }
 
         if (isLoading){
-            Text(stringResource(R.string.loading))
+            GreenFitLoadingScreen(modifier = Modifier.fillMaxSize())
         }else{
             val upcoming = workoutSessionsList.filter { it.date >= today }
             val history = workoutSessionsList.filter { it.date < today }
@@ -236,17 +244,30 @@ fun ProfileClasses(
                 EmptyClassesState(onBookClassClick)
             }else{
                 filteredSessions.forEach { session ->
+                    val location = locationsList.find { it.id == session.locationId }
+                    val locationName = if (location != null) { stringResource(location.nameRes)} else "Unknown"
                     ElevatedCard(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
                     ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceEvenly
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth()
                         ) {
-                            Text(
-                                text = stringResource(session.titleRes)
+                            IconText(
+                                imageVector = Icons.Default.Star,
+                                text = "${stringResource(session.titleRes)} with ${stringResource(session.trainerRes)}"
                             )
-                            Text(
-                                text = session.date
+                            IconText(
+                                imageVector = Icons.Default.Alarm,
+                                text = "${session.date}, ${session.startTime}"
+                            )
+                            IconText(
+                                imageVector = Icons.Default.LocationOn,
+                                text = "Location: $locationName"
                             )
                         }
                     }
@@ -287,7 +308,9 @@ fun SignOutButton(onLogoutClick: () -> Unit){
     OutlinedButton(
         onClick = onLogoutClick,
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(

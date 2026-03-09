@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
+import com.example.greenfitapp.components.GreenFitLoadingScreen
 import com.example.greenfitapp.data.WorkoutManager
 import com.example.greenfitapp.data.WorkoutSession
 import com.example.greenfitapp.data.auth.AuthManager
@@ -90,7 +93,7 @@ fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
         }
 
         if(isLoading){
-            Text(stringResource(R.string.loading))
+            GreenFitLoadingScreen(modifier = Modifier.fillMaxSize())
         }else {
             LazyColumn() {
                 val filteredList = if (selectedId == null) {
@@ -130,7 +133,7 @@ fun WorkoutSessionCard(
     val location = locationsList.find { it.id == workoutSession.locationId }
     val locationName = if (location != null) {stringResource(location.nameRes)} else "Unknown"
 
-    Card(
+    ElevatedCard(
         modifier = Modifier.padding(8.dp)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
@@ -145,7 +148,7 @@ fun WorkoutSessionCard(
 
             IconText(Icons.Default.Star, "${stringResource(workoutSession.titleRes)} with ${stringResource(workoutSession.trainerRes)}")
             IconText(Icons.Default.LocationOn, locationName)
-            IconText(Icons.Default.Alarm, "${stringResource(R.string.label_start, workoutSession.startTime)} - ${stringResource(R.string.label_duration, workoutSession.durationMinutes)}")
+            IconText(Icons.Default.Alarm, "${stringResource(R.string.label_start,workoutSession.date, workoutSession.startTime)} - ${stringResource(R.string.label_duration, workoutSession.durationMinutes)}")
             IconText(Icons.Default.People, "${stringResource(R.string.label_slots_available , workoutSession.currentParticipants, workoutSession.maxParticipants)} ")
 
             if (workoutSession.maxParticipants != workoutSession.currentParticipants) {

@@ -61,7 +61,7 @@
     <string name="trainer_david">David Stone</string>
 
     <string name="label_trainer">Trainer:</string>
-    <string name="label_start">Starts at %1$s</string>
+    <string name="label_start">%1$s at %2$s</string>
     <string name="label_duration">Duration: %1$d min</string>
     <string name="label_slots_available">Slots: %1$d / %2$d</string>
     <string name="button_join">Join Session</string>
