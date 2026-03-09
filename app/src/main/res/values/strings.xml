@@ -49,6 +49,8 @@
     <string name="location_header_format">%1$s • %2$.1f (%3$d reviews)</string>
 
 <!--WorkoutSessionScreen-->
+    <string name="workouts_not_found">No available classes found...</string>
+
     <string name="workout_yoga_title">Hatha Yoga Flow</string>
     <string name="workout_crossfit_title">High Intensity Crossfit</string>
     <string name="workout_swimming_title">Advanced Swimming</string>

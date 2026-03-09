@@ -10,15 +10,20 @@ import com.google.firebase.firestore.firestore
 object WorkoutManager {
     private val db: FirebaseFirestore by lazy { Firebase.firestore }
 
-    fun getWorkouts(onComplete: (List<WorkoutSession>) -> Unit){
+    fun getWorkouts(
+            bookedIds: List<String>,
+            onComplete: (List<WorkoutSession>
+        ) -> Unit){
         db.collection("classes")
             .get()
             .addOnSuccessListener { result ->
                 val workoutsList = mutableListOf<WorkoutSession>()
                 for (document in result) {
-                    val workout = document.toObject(WorkoutSession::class.java)
-                    val workoutWithId = workout.copy(id=document.id)
-                    workoutsList.add(workoutWithId)
+                    if (document.id !in bookedIds){
+                        val workout = document.toObject(WorkoutSession::class.java)
+                        val workoutWithId = workout.copy(id=document.id)
+                        workoutsList.add(workoutWithId)
+                    }
                 }
                 onComplete(workoutsList)
             }

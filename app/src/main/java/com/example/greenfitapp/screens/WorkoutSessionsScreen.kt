@@ -1,13 +1,17 @@
 package com.example.greenfitapp.screens
 
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,11 +21,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.CheckCircleOutline
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -45,18 +51,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
 import com.example.greenfitapp.components.GreenFitLoadingScreen
+import com.example.greenfitapp.data.UserProfile
 import com.example.greenfitapp.data.WorkoutManager
 import com.example.greenfitapp.data.WorkoutSession
 import com.example.greenfitapp.data.auth.AuthManager
 import com.example.greenfitapp.data.locationsList
 import com.example.greenfitapp.ui.theme.GreenFitAppTheme
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
     var selectedId by remember { mutableStateOf<Int?>(null) }
     var workoutSessionsList by remember { mutableStateOf<List<WorkoutSession>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
-    val context = LocalContext.current
+    val today = java.time.LocalDate.now().toString()
 
     Column(
         modifier = Modifier
@@ -86,38 +94,63 @@ fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
         }
 
         LaunchedEffect(Unit){
-            WorkoutManager.getWorkouts { workoutSessions ->
-                workoutSessionsList = workoutSessions
-                isLoading = false
+            AuthManager.getUserProfile { profile ->
+                if (profile != null){
+                    WorkoutManager.getWorkouts(profile.bookedClassesIds) { workoutSessions ->
+                        workoutSessionsList = workoutSessions
+                        isLoading = false
+                    }
+                }else{
+                    WorkoutManager.getWorkouts(emptyList()) { workoutSessions ->
+                        workoutSessionsList = workoutSessions
+                        isLoading = false
+                    }
+                }
             }
         }
 
         if(isLoading){
             GreenFitLoadingScreen(modifier = Modifier.fillMaxSize())
         }else {
-            LazyColumn() {
-                val filteredList = if (selectedId == null) {
-                    workoutSessionsList
-                } else {
-                    workoutSessionsList.filter { it.locationId == selectedId }
+            if (workoutSessionsList.isEmpty()){
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Error,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = stringResource(R.string.workouts_not_found),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
-                items(filteredList) { workout ->
-                    WorkoutSessionCard(
-                        workout,
-                        onApplyButtonClick = {
-                            AuthManager.bookClasses(
-                                workout.id,
-                            ) { success ->
-                                if (success) {
-                                    Toast.makeText(
-                                        context,
-                                        context.getText(R.string.success_apply_toast),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+            }else{
+                LazyColumn() {
+                    val filteredList = workoutSessionsList.filter { workoutSession ->
+                        val isUpcoming = workoutSession.date >= today
+
+                        val matchesLocation = selectedId == null || workoutSession.locationId == selectedId
+
+                        isUpcoming && matchesLocation
+                    }
+                    items(filteredList) { workout ->
+                        WorkoutSessionCard(
+                            workout,
+                            onApplySuccess = {
+                                workoutSessionsList = workoutSessionsList.filter{it.id != workout.id}
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
@@ -127,11 +160,13 @@ fun WorkoutSessionsScreen(modifier: Modifier = Modifier){
 @Composable
 fun WorkoutSessionCard(
     workoutSession: WorkoutSession,
-    onApplyButtonClick: () -> Unit,
+    onApplySuccess: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val location = locationsList.find { it.id == workoutSession.locationId }
     val locationName = if (location != null) {stringResource(location.nameRes)} else "Unknown"
+    var isBooking by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     ElevatedCard(
         modifier = Modifier.padding(8.dp)
@@ -152,7 +187,27 @@ fun WorkoutSessionCard(
             IconText(Icons.Default.People, "${stringResource(R.string.label_slots_available , workoutSession.currentParticipants, workoutSession.maxParticipants)} ")
 
             if (workoutSession.maxParticipants != workoutSession.currentParticipants) {
-                Button(onClick = { onApplyButtonClick() }) {
+                Button(
+                    enabled = !isBooking,
+                    onClick = {
+                        isBooking = true
+
+                        AuthManager.bookClasses(
+                            workoutSession.id,
+                        ) { success ->
+                            isBooking = false
+                            if (success) {
+                                Toast.makeText(
+                                    context,
+                                    context.getText(R.string.success_apply_toast),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                onApplySuccess()
+                            }
+                        }
+                    }
+                ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = modifier
@@ -165,7 +220,7 @@ fun WorkoutSessionCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = stringResource(R.string.label_apply),
+                            text = if(isBooking) "Booking..." else stringResource(R.string.label_apply),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
