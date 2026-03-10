@@ -151,4 +151,27 @@ object AuthManager {
             onComplete(false)
         }
     }
+
+    fun cancelClass(
+        classId: String,
+        onComplete: (Boolean) -> Unit
+    ){
+        val uid = auth.currentUser?.uid
+        if (uid == null){
+            onComplete(false)
+            return
+        }
+
+        val userRef = db.collection("users").document(uid)
+        val classRef = db.collection("classes").document(classId)
+
+        db.runBatch { batch ->
+            batch.update(userRef, "bookedClassesIds", FieldValue.arrayRemove(classId))
+            batch.update(classRef, "currentParticipants", FieldValue.increment(-1))
+        }.addOnSuccessListener {
+            onComplete(true)
+        }.addOnFailureListener {
+            onComplete(false)
+        }
+    }
 }

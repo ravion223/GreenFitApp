@@ -1,6 +1,7 @@
 package com.example.greenfitapp.screens
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Logout
@@ -27,9 +29,11 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
@@ -46,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -200,11 +205,14 @@ fun EmptyMembershipState(onBuyMembershipClick: () -> Unit){
 @Composable
 fun ProfileClasses(
     userProfile: UserProfile,
-    onBookClassClick: () -> Unit)
+    onBookClassClick: () -> Unit,
+)
 {
-    val today = LocalDate.now().toString()
     var workoutSessionsList by remember { mutableStateOf<List<WorkoutSession>>((emptyList())) }
+    val today = LocalDate.now().toString()
+    val context = LocalContext.current
     var isLoading by remember { mutableStateOf(true) }
+    var isCancelling by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         WorkoutManager.getUserWorkouts(userProfile.bookedClassesIds) { workoutSessions ->
@@ -251,24 +259,53 @@ fun ProfileClasses(
                             .fillMaxWidth()
                             .padding(bottom = 8.dp)
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .fillMaxWidth()
-                        ) {
-                            IconText(
-                                imageVector = Icons.Default.Star,
-                                text = "${stringResource(session.titleRes)} with ${stringResource(session.trainerRes)}"
-                            )
-                            IconText(
-                                imageVector = Icons.Default.Alarm,
-                                text = "${session.date}, ${session.startTime}"
-                            )
-                            IconText(
-                                imageVector = Icons.Default.LocationOn,
-                                text = "Location: $locationName"
-                            )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ){
+                            Column(
+                                horizontalAlignment = Alignment.Start,
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .weight(1f)
+                            ) {
+                                IconText(
+                                    imageVector = Icons.Default.Star,
+                                    text = "${stringResource(session.titleRes)} with ${stringResource(session.trainerRes)}"
+                                )
+                                IconText(
+                                    imageVector = Icons.Default.Alarm,
+                                    text = "${session.date}, ${session.startTime}"
+                                )
+                                IconText(
+                                    imageVector = Icons.Default.LocationOn,
+                                    text = "Location: $locationName"
+                                )
+                            }
+                            IconButton(
+                                enabled = !isCancelling,
+                                onClick = {
+                                    isCancelling = true
+                                    AuthManager.cancelClass(session.id)
+                                    { success ->
+                                        isCancelling = false
+                                        if(success){
+                                            Toast.makeText(
+                                                context,
+                                                context.getText(R.string.cancel_class_toast),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                        workoutSessionsList = workoutSessionsList.filter { it.id != session.id }
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Cancel,
+                                    contentDescription = stringResource(R.string.cancel_class),
+                                    tint = if(!isCancelling)MaterialTheme.colorScheme.error else Color.Gray
+                                )
+                            }
                         }
                     }
                 }

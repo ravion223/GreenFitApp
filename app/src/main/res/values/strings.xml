@@ -109,4 +109,6 @@
     <string name="dialog_logout_text">You will need to sign in again to access your fitness data.</string>
     <string name="confirm_logout_button">Yes, Logout</string>
     <string name="dismiss_logout_button">No, go back</string>
+    <string name="cancel_class_toast">Successfully canceled!</string>
+    <string name="cancel_class">Cancel this class</string>
 </resources>

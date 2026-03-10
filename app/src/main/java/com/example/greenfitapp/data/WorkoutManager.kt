@@ -45,7 +45,7 @@ object WorkoutManager {
                 var bookedClasses = mutableListOf<WorkoutSession>()
                 for (document in result) {
                     val workout = document.toObject(WorkoutSession::class.java)
-                    bookedClasses.add(workout)
+                    bookedClasses.add(workout.copy(id=document.id))
                 }
                 onComplete(bookedClasses)
             }.addOnFailureListener {
