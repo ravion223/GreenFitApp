@@ -174,4 +174,25 @@ object AuthManager {
             onComplete(false)
         }
     }
+
+    fun UpdateUsername(
+        newName: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val uid = auth.currentUser?.uid
+        if (uid == null){
+            onComplete(false)
+            return
+        }
+
+        db.collection("users")
+            .document(uid)
+            .update("name", newName)
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
+    }
 }

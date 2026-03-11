@@ -22,20 +22,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -54,11 +54,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.R
 import com.example.greenfitapp.components.GreenFitLoadingScreen
-import com.example.greenfitapp.data.GymLocation
 import com.example.greenfitapp.data.MembershipItem
 import com.example.greenfitapp.data.UserProfile
 import com.example.greenfitapp.data.WorkoutManager
@@ -66,7 +64,6 @@ import com.example.greenfitapp.data.WorkoutSession
 import com.example.greenfitapp.data.auth.AuthManager
 import com.example.greenfitapp.data.locationsList
 import com.example.greenfitapp.data.membershipList
-import com.example.greenfitapp.ui.theme.GreenFitAppTheme
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Date
@@ -82,6 +79,8 @@ fun ProfileScreen(
     var userProfile by remember { mutableStateOf<UserProfile?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var dialogState by remember { mutableStateOf(false) }
+    var showUpdateUsernameDialog by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(Unit) {
         AuthManager.getUserProfile { profile ->
@@ -102,8 +101,13 @@ fun ProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
-                ProfilePicture()
-                ProfileUsername()
+                ProfilePicture(
+                    profileName = userProfile?.name
+                )
+                ProfileUsername(
+                    profileName = userProfile?.name,
+                    onUsernameUpdateClick = { showUpdateUsernameDialog = true }
+                )
                 ProfileMemberships(
                     userProfile = profile,
                     onBuyMembershipClick = onBuyMembershipClick
@@ -121,12 +125,23 @@ fun ProfileScreen(
                     onConfirmation = onConfirmation
                 )
             }
+            if (showUpdateUsernameDialog){
+                UsernameUpdateDialog(
+                    onDismissRequest = { showUpdateUsernameDialog = !showUpdateUsernameDialog },
+                    onConfirmation = { newName ->
+                        showUpdateUsernameDialog = false
+                        userProfile = userProfile?.copy(name = newName)
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun ProfilePicture() {
+fun ProfilePicture(
+    profileName: String?
+) {
     Box(
         modifier = Modifier
             .size(100.dp)
@@ -135,24 +150,33 @@ fun ProfilePicture() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = AuthManager.getCurrentUserName()?.take(1)?.uppercase() ?: "User",
+            text = profileName?.take(1)?.uppercase() ?: "User",
             style = MaterialTheme.typography.displayMedium
         )
     }
 }
 
 @Composable
-fun ProfileUsername(){
-    Row() {
-        Icon(
-            imageVector = Icons.Default.Edit,
-            contentDescription = stringResource(R.string.edit_username),
-            modifier = Modifier.size(22.dp),
-            tint = MaterialTheme.colorScheme.primary,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+fun ProfileUsername(
+    profileName: String?,
+    onUsernameUpdateClick: () -> Unit
+){
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        IconButton(
+            onClick = { onUsernameUpdateClick() }
+        ){
+            Icon(
+                imageVector = Icons.Default.Edit,
+                contentDescription = stringResource(R.string.edit_username),
+                modifier = Modifier.size(22.dp),
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        }
         Text(
-            text = AuthManager.getCurrentUserName() ?: "User",
+            text = profileName ?: "User",
             style = MaterialTheme.typography.titleLarge
         )
     }
@@ -434,10 +458,51 @@ fun ProfileMembershipCard(membership: MembershipItem, profile: UserProfile) {
     }
 }
 
-@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreenPreview(){
-    GreenFitAppTheme() {
-
-    }
+fun UsernameUpdateDialog(
+    onConfirmation: (String) -> Unit,
+    onDismissRequest: () -> Unit
+){
+    var newUsernameInput by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    AlertDialog(
+        icon = {
+            Icon(
+                imageVector = Icons.Default.DriveFileRenameOutline,
+                contentDescription = null
+            )
+        },
+        title = {
+            Text(stringResource(R.string.new_name))
+        },
+        text = {
+            OutlinedTextField(
+                value = newUsernameInput,
+                onValueChange = { newUsernameInput = it },
+            )
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                AuthManager.UpdateUsername(
+                    newUsernameInput
+                ){ success ->
+                    if(success){
+                        Toast.makeText(context, context.getText(R.string.toast_updateUsername), Toast.LENGTH_SHORT).show()
+                        onConfirmation(newUsernameInput)
+                    }
+                }
+            }) {
+                Text(stringResource(R.string.confirm_updateUsername_button))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onDismissRequest() }) {
+                Text(stringResource(R.string.dismiss_updateUsername_button))
+            }
+        }
+    )
 }

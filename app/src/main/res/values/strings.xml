@@ -116,4 +116,8 @@
     <string name="dismiss_logout_button">No, go back</string>
     <string name="cancel_class_toast">Successfully canceled!</string>
     <string name="cancel_class">Cancel this class</string>
+    <string name="new_name">Enter a name:</string>
+    <string name="confirm_updateUsername_button">Update</string>
+    <string name="dismiss_updateUsername_button">Go back</string>
+    <string name="toast_updateUsername">Name is successfully updated</string>
 </resources>
