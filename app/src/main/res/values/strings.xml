@@ -33,6 +33,11 @@
     <string name="purchase_success">Purchased successfully</string>
     <string name="due_to">Active until:</string>
     <string name="loading">Loading...</string>
+    <string name="membership_owned">Current membership</string>
+    <string name="membership_alert_title">You already have a membership</string>
+    <string name="membership_alert_text">If you buy a new membership, your current membership will be deleted!</string>
+    <string name="membership_alert_continue">Continue</string>
+    <string name="membership_alert_back">Go back</string>
 
 <!--GymLocationsScreen-->
     <string name="location_arena_title">GreenFit Arena</string>
