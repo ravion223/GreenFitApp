@@ -199,7 +199,7 @@ fun PriceBlock(label: String, price: Int) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = "$price ₴",

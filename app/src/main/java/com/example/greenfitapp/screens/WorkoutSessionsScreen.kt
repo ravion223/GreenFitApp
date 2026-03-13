@@ -215,7 +215,6 @@ fun WorkoutSessionCard(
                         Icon(
                             imageVector = Icons.Default.CheckCircleOutline,
                             contentDescription = null,
-                            tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))

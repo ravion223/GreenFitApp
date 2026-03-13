@@ -99,7 +99,7 @@ fun ProfileScreen(
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.verticalScroll(rememberScrollState())
+                modifier = Modifier.verticalScroll(rememberScrollState()).padding(top=8.dp)
             ) {
                 ProfilePicture(
                     profileName = userProfile?.name
@@ -272,7 +272,7 @@ fun ProfileClasses(
             val upcoming = workoutSessionsList.filter { it.date >= today }
             val history = workoutSessionsList.filter { it.date < today }
             val filteredSessions = if(state == 0){upcoming}else{history}
-            if(workoutSessionsList.isEmpty()){
+            if(filteredSessions.isEmpty()){
                 EmptyClassesState(onBookClassClick)
             }else{
                 filteredSessions.forEach { session ->
@@ -327,7 +327,7 @@ fun ProfileClasses(
                                 Icon(
                                     imageVector = Icons.Default.Cancel,
                                     contentDescription = stringResource(R.string.cancel_class),
-                                    tint = if(!isCancelling)MaterialTheme.colorScheme.error else Color.Gray
+                                    tint = if(!isCancelling)MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                                 )
                             }
                         }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -76,6 +77,21 @@ fun GreenFitFooter(
                 )
             },
             label = { Text(stringResource(R.string.profileButton)) },
+            colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = Color.White,
+                indicatorColor = MaterialTheme.colorScheme.primary
+            )
+        )
+        NavigationBarItem(
+            selected = selectedIndex == 5,
+            onClick = { onTabSelected(5) },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.settingsButton)
+                )
+            },
+            label = { Text(stringResource(R.string.settingsButton)) },
             colors = NavigationBarItemDefaults.colors(
                 selectedIconColor = Color.White,
                 indicatorColor = MaterialTheme.colorScheme.primary

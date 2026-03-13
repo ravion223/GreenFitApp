@@ -8,17 +8,20 @@
     <string name="classes">Classes</string>
     <string name="locations">Locations</string>
     <string name="news">NEWS</string>
-    <string name="title1">"Нова акція!"</string>
-    <string name="title2">"Графік на свята"</string>
-    <string name="title3">"Новий тренер!"</string>
+    <string name="title1">"New proposition!"</string>
+    <string name="title2">"Holiday schedule"</string>
+    <string name="title3">"New coach!"</string>
     <string name="title4">fdkskfkskfskfk</string>
     <string name="greeting">Hello</string>
-    <string name="newsContent1">Знижка на абонементи 20% тільки цього тижня.</string>
-    <string name="newsContent2">Ми працюємо без вихідних з 8:00 до 22:00..</string>
-    <string name="newsContent3">Знайомтесь з Артемом — спеціалістом з кросфіту.</string>
+    <string name="newsContent1">Only this week - discount 20% for all memberships!</string>
+    <string name="newsContent2">We work without weekends from 8:00 to 22:00 </string>
+    <string name="newsContent3">Welcome Artem - new Crossfit Coach!</string>
     <string name="newsContent4">fdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfk</string>
+
+<!--MainComponents-->
     <string name="homeButton">Home</string>
     <string name="profileButton">My profile</string>
+    <string name="settingsButton">Settings</string>
 
 <!--MembershipsScreen-->
     <string name="buyButton">Buy</string>
@@ -120,4 +123,11 @@
     <string name="confirm_updateUsername_button">Update</string>
     <string name="dismiss_updateUsername_button">Go back</string>
     <string name="toast_updateUsername">Name is successfully updated</string>
+
+<!--SettingsScreen-->
+    <string name="dark_mode_switch">Dark mode:</string>
+    <string name="switch_language">Choose a language:</string>
+    <string name="icon_language">Change language</string>
+    <string name="english_lang">English</string>
+    <string name="ukrainian_lang">Ukrainian</string>
 </resources>
