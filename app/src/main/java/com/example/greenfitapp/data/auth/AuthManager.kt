@@ -175,7 +175,7 @@ object AuthManager {
         }
     }
 
-    fun UpdateUsername(
+    fun updateUsername(
         newName: String,
         onComplete: (Boolean) -> Unit
     ) {
@@ -188,6 +188,27 @@ object AuthManager {
         db.collection("users")
             .document(uid)
             .update("name", newName)
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
+    }
+
+    fun updateAvatar(
+        newAvatar: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val uid = auth.currentUser?.uid
+        if (uid == null) {
+            onComplete(false)
+            return
+        }
+
+        db.collection("users")
+            .document(uid)
+            .update("avatar", newAvatar)
             .addOnSuccessListener {
                 onComplete(true)
             }

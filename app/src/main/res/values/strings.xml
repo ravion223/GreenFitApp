@@ -123,6 +123,8 @@
     <string name="confirm_updateUsername_button">Update</string>
     <string name="dismiss_updateUsername_button">Go back</string>
     <string name="toast_updateUsername">Name is successfully updated</string>
+    <string name="avatar_title">Choose your avatar</string>
+    <string name="cancel_avatar_selection">Go back</string>
 
 <!--SettingsScreen-->
     <string name="dark_mode_switch">Dark mode:</string>

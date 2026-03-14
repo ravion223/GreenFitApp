@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,9 +13,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,6 +34,7 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -50,11 +56,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.example.greenfitapp.R
 import com.example.greenfitapp.components.GreenFitLoadingScreen
 import com.example.greenfitapp.data.MembershipItem
@@ -80,6 +88,11 @@ fun ProfileScreen(
     var isLoading by remember { mutableStateOf(true) }
     var dialogState by remember { mutableStateOf(false) }
     var showUpdateUsernameDialog by remember { mutableStateOf(false) }
+    var showAvatarDialog by remember { mutableStateOf(false) }
+    val availableAvatars = listOf(
+        "avatar_1", "avatar_2", "avatar_3",
+        "avatar_4"
+    )
 
 
     LaunchedEffect(Unit) {
@@ -102,7 +115,8 @@ fun ProfileScreen(
                 modifier = Modifier.verticalScroll(rememberScrollState()).padding(top=8.dp)
             ) {
                 ProfilePicture(
-                    profileName = userProfile?.name
+                    userProfile = profile,
+                    onAvatarClick = { showAvatarDialog = true }
                 )
                 ProfileUsername(
                     profileName = userProfile?.name,
@@ -136,23 +150,56 @@ fun ProfileScreen(
             }
         }
     }
+    if (showAvatarDialog){
+        AvatarDialog(
+            onDismissRequest = { showAvatarDialog = false },
+            onAvatarUpdate = { avatarName ->
+                AuthManager.updateAvatar(newAvatar = avatarName) { success ->
+                    if (success){
+                        showAvatarDialog = false
+                        userProfile = userProfile?.copy(avatar = avatarName)
+                    }
+                }
+            },
+            availableAvatars = availableAvatars
+        )
+    }
 }
 
 @Composable
 fun ProfilePicture(
-    profileName: String?
+    userProfile: UserProfile,
+    onAvatarClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .size(100.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primaryContainer),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = profileName?.take(1)?.uppercase() ?: "User",
-            style = MaterialTheme.typography.displayMedium
-        )
+    if(userProfile.avatar.isEmpty()){
+        Box(
+            modifier = Modifier
+                .size(100.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .clickable { onAvatarClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = userProfile.name.take(1).uppercase(),
+                style = MaterialTheme.typography.displayMedium
+            )
+        }
+    } else{
+        Box(
+            modifier = Modifier
+                .size(100.dp)
+                .clip(CircleShape)
+                .clickable { onAvatarClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(userProfile.avatarRes),
+                contentDescription = "User Avatar",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 
@@ -487,7 +534,7 @@ fun UsernameUpdateDialog(
         },
         confirmButton = {
             TextButton(onClick = {
-                AuthManager.UpdateUsername(
+                AuthManager.updateUsername(
                     newUsernameInput
                 ){ success ->
                     if(success){
@@ -502,6 +549,47 @@ fun UsernameUpdateDialog(
         dismissButton = {
             TextButton(onClick = { onDismissRequest() }) {
                 Text(stringResource(R.string.dismiss_updateUsername_button))
+            }
+        }
+    )
+}
+
+@Composable
+fun AvatarDialog(
+    onDismissRequest: () -> Unit,
+    onAvatarUpdate: (String) -> Unit,
+    availableAvatars: List<String>
+){
+    val context = LocalContext.current
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        title = { Text(text = stringResource(R.string.avatar_title)) },
+        text = {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(availableAvatars) { avatarName ->
+                    val resId = context.resources.getIdentifier(avatarName, "drawable", context.packageName)
+
+                    Image(
+                        painter = painterResource(resId),
+                        contentDescription = avatarName,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable {
+                                onAvatarUpdate(avatarName)
+                            }
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onDismissRequest() }) {
+                Text(text = stringResource(R.string.cancel_avatar_selection))
             }
         }
     )

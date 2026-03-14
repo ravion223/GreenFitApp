@@ -75,8 +75,8 @@
     <string name="label_start">%1$s о %2$s</string>
     <string name="label_duration">Тривалість: %1$d хвилин</string>
     <string name="label_slots_available">Місця: %1$d / %2$d</string>
-<!--    <string name="button_join">Join Session</string>-->
-<!--    <string name="status_full">Session Full</string>-->
+    <string name="button_join">Доєднатись</string>-->
+    <string name="status_full">Місця переповнені</string>-->
     <string name="label_apply">Записатись</string>
     <string name="full_slots">Переповнено</string>
     <string name="success_apply_toast">Запис успішний</string>
@@ -124,6 +124,8 @@
     <string name="confirm_updateUsername_button">Оновити</string>
     <string name="dismiss_updateUsername_button">Повернутись</string>
     <string name="toast_updateUsername">Ім\'я успішно оновлено</string>
+    <string name="avatar_title">Оберіть аватар</string>
+    <string name="cancel_avatar_selection">Повернутись</string>
 
     <!--SettingsScreen-->
     <string name="dark_mode_switch">Темна тема:</string>
