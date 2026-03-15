@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">GreenFitApp</string>
+    <string name="unknown">Unknown</string>
 
 <!--HomeScreen-->
     <string name="header_title">GreenFit</string>
@@ -7,17 +8,20 @@
     <string name="classes">Classes</string>
     <string name="locations">Locations</string>
     <string name="news">NEWS</string>
-    <string name="title1">"Нова акція!"</string>
-    <string name="title2">"Графік на свята"</string>
-    <string name="title3">"Новий тренер!"</string>
+    <string name="title1">"New proposition!"</string>
+    <string name="title2">"Holiday schedule"</string>
+    <string name="title3">"New coach!"</string>
     <string name="title4">fdkskfkskfskfk</string>
     <string name="greeting">Hello</string>
-    <string name="newsContent1">Знижка на абонементи 20% тільки цього тижня.</string>
-    <string name="newsContent2">Ми працюємо без вихідних з 8:00 до 22:00..</string>
-    <string name="newsContent3">Знайомтесь з Артемом — спеціалістом з кросфіту.</string>
+    <string name="newsContent1">Only this week - discount 20% for all memberships!</string>
+    <string name="newsContent2">We work without weekends from 8:00 to 22:00 </string>
+    <string name="newsContent3">Welcome Artem - new Crossfit Coach!</string>
     <string name="newsContent4">fdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfk</string>
+
+<!--MainComponents-->
     <string name="homeButton">Home</string>
     <string name="profileButton">My profile</string>
+    <string name="settingsButton">Settings</string>
 
 <!--MembershipsScreen-->
     <string name="buyButton">Buy</string>
@@ -26,6 +30,17 @@
     <string name="platinumTierDesc">Platinum Tier - Ultimate status and professional approach. Everything in Gold + Exclusive Zones. Unlocks the Crossfit zone and combat sports hall. Includes sessions with top-tier personal trainers, access to the VIP lounge with a complimentary fitness bar, and full use of the tennis courts. Athletes who want the full cycle — from high-intensity functional training to premium relaxation and tennis.</string>
     <string name="monthly">Monthly:</string>
     <string name="yearly">Yearly:</string>
+    <string name="subscribe_button_sheet">Choose your plan</string>
+    <string name="one_month_sub">1 month</string>
+    <string name="one_year_sub">1 year</string>
+    <string name="purchase_success">Purchased successfully</string>
+    <string name="due_to">Active until:</string>
+    <string name="loading">Loading...</string>
+    <string name="membership_owned">Current membership</string>
+    <string name="membership_alert_title">You already have a membership</string>
+    <string name="membership_alert_text">If you buy a new membership, your current membership will be deleted!</string>
+    <string name="membership_alert_continue">Continue</string>
+    <string name="membership_alert_back">Go back</string>
 
 <!--GymLocationsScreen-->
     <string name="location_arena_title">GreenFit Arena</string>
@@ -42,6 +57,8 @@
     <string name="location_header_format">%1$s • %2$.1f (%3$d reviews)</string>
 
 <!--WorkoutSessionScreen-->
+    <string name="workouts_not_found">No available classes found...</string>
+
     <string name="workout_yoga_title">Hatha Yoga Flow</string>
     <string name="workout_crossfit_title">High Intensity Crossfit</string>
     <string name="workout_swimming_title">Advanced Swimming</string>
@@ -54,13 +71,14 @@
     <string name="trainer_david">David Stone</string>
 
     <string name="label_trainer">Trainer:</string>
-    <string name="label_start">Starts at %1$s</string>
+    <string name="label_start">%1$s at %2$s</string>
     <string name="label_duration">Duration: %1$d min</string>
     <string name="label_slots_available">Slots: %1$d / %2$d</string>
     <string name="button_join">Join Session</string>
     <string name="status_full">Session Full</string>
     <string name="label_apply">Apply</string>
     <string name="full_slots">Full</string>
+    <string name="success_apply_toast">Applied successfully</string>
 
     <string name="day_monday">Monday</string>
     <string name="day_tuesday">Tuesday</string>
@@ -78,10 +96,40 @@
     <string name="login_label">Welcome to GreenFit</string>
     <string name="sign_in_text">Sign In</string>
     <string name="sign_up_text">Join GreenFit</string>
-    <string name="register_redirect">Dont have an account yet? Sign up</string>
+    <string name="register_redirect">Don\'t have an account yet? Sign up</string>
     <string name="login_redirect">Already have an account? Sign in</string>
     <string name="auth_error_message">Invalid email or password.</string>
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
 
+<!--ProfileScreen-->
+    <string name="edit_username">Edit username</string>
+    <string name="memberships_label">Your membership:</string>
+    <string name="membership_empty">You don\'t have membership yet.</string>
+    <string name="membership_redirect">View memberships &amp; Join GreenFit</string>
+    <string name="classes_label">Your classes:</string>
+    <string name="upcoming_tab">Upcoming</string>
+    <string name="history_tab">History</string>
+    <string name="no_classes_yet">No classes yet.</string>
+    <string name="book_first_class">Book your first class</string>
+    <string name="signout_button">Logout</string>
+    <string name="dialog_logout_title">Confirm Logout</string>
+    <string name="dialog_logout_text">You will need to sign in again to access your fitness data.</string>
+    <string name="confirm_logout_button">Yes, Logout</string>
+    <string name="dismiss_logout_button">No, go back</string>
+    <string name="cancel_class_toast">Successfully canceled!</string>
+    <string name="cancel_class">Cancel this class</string>
+    <string name="new_name">Enter a name:</string>
+    <string name="confirm_updateUsername_button">Update</string>
+    <string name="dismiss_updateUsername_button">Go back</string>
+    <string name="toast_updateUsername">Name is successfully updated</string>
+    <string name="avatar_title">Choose your avatar</string>
+    <string name="cancel_avatar_selection">Go back</string>
+
+<!--SettingsScreen-->
+    <string name="dark_mode_switch">Dark mode:</string>
+    <string name="switch_language">Choose a language:</string>
+    <string name="icon_language">Change language</string>
+    <string name="english_lang">English</string>
+    <string name="ukrainian_lang">Ukrainian</string>
 </resources>

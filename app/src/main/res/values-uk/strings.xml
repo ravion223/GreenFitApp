@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GreenFitApp</string>
+    <string name="unknown">Unknown</string>
+
+    <!--HomeScreen-->
+    <string name="header_title">GreenFit</string>
+    <string name="memberships">Абонементи</string>
+    <string name="classes">Заняття</string>
+    <string name="locations">Локації</string>
+    <string name="news">НОВИНИ</string>
+    <string name="title1">"Нова акція!"</string>
+    <string name="title2">"Святковий графік:"</string>
+    <string name="title3">"Новий тренер!"</string>
+    <string name="title4">fdkskfkskfskfk</string>
+    <string name="greeting">Привіт</string>
+    <string name="newsContent1">Лише цього тижня - знижка 20% на усі абонементи!</string>
+    <string name="newsContent2">Ми працюємо без вихідних з 8:00 до 22:00 </string>
+    <string name="newsContent3">Привітайте Артема - новий тренер з кросфіту!</string>
+    <string name="newsContent4">fdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfkfdkskfkskfskfk</string>
+
+    <!--MainComponents-->
+    <string name="homeButton">Головна</string>
+    <string name="profileButton">Мій профіль</string>
+    <string name="settingsButton">Налаштування</string>
+
+    <!--MembershipsScreen-->
+    <string name="buyButton">Придбати</string>
+    <string name="silverTierDesc">Silver Tier - Необхідний комфорт та все необхідне для результату. Необмежений доступ до тренажерного залу та кардіо-зони. Відкриває доступ до базових групових занять (йога, пілатес) та користування комфортними роздягальнями із сауною. Ідеальний початок для тих, хто зосереджений на силових тренуваннях та підтримці фізичної форми.</string>
+    <string name="goldTierDesc">Gold Tier - Розширений простір для спорту та відновлення. Все в Silver + Аквазона. Відкриває 25-метровий басейн та джакузі для відновлення м\'язів. Ви також отримуєте можливість забронювати баскетбольний майданчик або криту арену для командних видів спорту (футзал, волейбол) у визначені години. Для тих, хто любить різноманітність: сьогодні підняття тягарів, завтра плавання або гра в баскетбол з друзями.</string>
+    <string name="platinumTierDesc">Platinum Tier - Найвищий статус та професійний підхід. Все в золотому + ексклюзивні зони. Відкриває доступ до зони кросфіту та залу бойових видів спорту. Включає заняття з персональними тренерами вищого рівня, доступ до VIP-залу з безкоштовним фітнес-баром та повне користування тенісними кортами. Спортсмени, які бажають повного циклу — від високоінтенсивних функціональних тренувань до преміального відпочинку та тенісу.</string>
+    <string name="monthly">Щомісячний:</string>
+    <string name="yearly">Річний:</string>
+    <string name="subscribe_button_sheet">Оберіть свій план</string>
+    <string name="one_month_sub">1 місяць</string>
+    <string name="one_year_sub">1 рік</string>
+    <string name="purchase_success">Успішно придбано</string>
+    <string name="due_to">Активний до:</string>
+    <string name="loading">Завантаження...</string>
+    <string name="membership_owned">Поточний абонемент</string>
+    <string name="membership_alert_title">Ви вже маєте абонемент</string>
+    <string name="membership_alert_text">Якщо ви купите новий абонемент, ваш поточний абонемент буде анульовано!</string>
+    <string name="membership_alert_continue">Продовжити</string>
+    <string name="membership_alert_back">Повернутися</string>
+
+    <!--GymLocationsScreen-->
+    <string name="location_arena_title">GreenFit Arena</string>
+    <string name="location_arena_address">12 Спорту бульв.</string>
+    <string name="location_arena_desc">Наш найбільший комплекс із професійними зонами кросфіту та залами змішаних бойових мистецтв.</string>
+
+    <string name="location_studio_title">GreenFit Studio</string>
+    <string name="location_studio_address">5 Тиха вул.</string>
+    <string name="location_studio_desc">Бутік-студія, призначена для персональних тренувань та занять йогою в невеликих групах.</string>
+
+    <string name="location_central_title">GreenFit Central</string>
+    <string name="location_central_address">45 Перемоги бульв.</string>
+    <string name="location_central_desc">Наш флагманський тренажерний зал з 25-метровим басейном та просторою зоною аква-відновлення.</string>
+    <string name="location_header_format">%1$s • %2$.1f (%3$d reviews)</string>
+
+    <!--WorkoutSessionScreen-->
+    <string name="workouts_not_found">Доступних занять не знайдено...</string>
+
+    <string name="workout_yoga_title">Hatha Yoga Flow</string>
+    <string name="workout_crossfit_title">High Intensity Crossfit</string>
+    <string name="workout_swimming_title">Advanced Swimming</string>
+    <string name="workout_pilates_title">Core Strength Pilates</string>
+    <string name="workout_boxing_title">Boxing Foundation</string>
+
+    <string name="trainer_anna">Анна Стерлінг</string>
+    <string name="trainer_mark">Марк Торн</string>
+    <string name="trainer_olena">Олена Венс</string>
+    <string name="trainer_david">Девід Стоун</string>
+
+    <string name="label_trainer">Тренер:</string>
+    <string name="label_start">%1$s о %2$s</string>
+    <string name="label_duration">Тривалість: %1$d хвилин</string>
+    <string name="label_slots_available">Місця: %1$d / %2$d</string>
+    <string name="button_join">Доєднатись</string>-->
+    <string name="status_full">Місця переповнені</string>-->
+    <string name="label_apply">Записатись</string>
+    <string name="full_slots">Переповнено</string>
+    <string name="success_apply_toast">Запис успішний</string>
+
+    <string name="day_monday">Понеділок</string>
+    <string name="day_tuesday">Вівторок</string>
+    <string name="day_wednesday">Середа</string>
+    <string name="day_thursday">Четвер</string>
+    <string name="day_friday">П\'ятниця</string>
+    <string name="day_saturday">Субота</string>
+    <string name="day_sunday">Неділя</string>
+
+    <!--AuthScreen-->
+    <string name="email_label">Пошта:</string>
+    <string name="password_label">Пароль:</string>
+    <string name="username_label">Ваше ім\'я:</string>
+    <string name="register_label">Створити аккаунт</string>
+    <string name="login_label">Ласкаво просимо до GreenFit</string>
+    <string name="sign_in_text">Авторизуватись</string>
+    <string name="sign_up_text">Приєднайтесь до GreenFit</string>
+    <string name="register_redirect">Все ще немає аккаунту? Зареєструйтесь</string>
+    <string name="login_redirect">Вже маєте аккаунт? Авторизуйтесь</string>
+    <string name="auth_error_message">Невірна пошта або пароль.</string>
+    <string name="hide_password">Приховати пароль</string>
+    <string name="show_password">Показати пароль</string>
+
+    <!--ProfileScreen-->
+    <string name="edit_username">Редагувати ім\'я</string>
+    <string name="memberships_label">Ваш абонемент:</string>
+    <string name="membership_empty">Ви ще не маєте абонементу.</string>
+    <string name="membership_redirect">Переглянути абонементи &amp; Приєднатись до GreenFit</string>
+    <string name="classes_label">Ваші заняття:</string>
+    <string name="upcoming_tab">Майбутні</string>
+    <string name="history_tab">Історія</string>
+    <string name="no_classes_yet">Поки немає занять.</string>
+    <string name="book_first_class">Запишіться на перше заняття</string>
+    <string name="signout_button">Вийти</string>
+    <string name="dialog_logout_title">Підтвердити вихід</string>
+    <string name="dialog_logout_text">Вам потрібно буде ввійти знову, щоб отримати доступ до своїх даних про фізичну активність.</string>
+    <string name="confirm_logout_button">Так, вийти</string>
+    <string name="dismiss_logout_button">Ні, повернутись</string>
+    <string name="cancel_class_toast">Успішно скасовано!</string>
+    <string name="cancel_class">Скасувати це заняття</string>
+    <string name="new_name">Введіть ім\'я:</string>
+    <string name="confirm_updateUsername_button">Оновити</string>
+    <string name="dismiss_updateUsername_button">Повернутись</string>
+    <string name="toast_updateUsername">Ім\'я успішно оновлено</string>
+    <string name="avatar_title">Оберіть аватар</string>
+    <string name="cancel_avatar_selection">Повернутись</string>
+
+    <!--SettingsScreen-->
+    <string name="dark_mode_switch">Темна тема:</string>
+    <string name="switch_language">Оберіть мову:</string>
+    <string name="icon_language">Змінити мову</string>
+    <string name="english_lang">Англійська</string>
+    <string name="ukrainian_lang">Українська</string>
+</resources>

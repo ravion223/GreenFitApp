@@ -7,12 +7,13 @@ import com.example.greenfitapp.R
 data class MembershipItem(
     @DrawableRes val imageId: Int,
     @StringRes val descriptionId: Int,
+    val id: Int,
     val priceMonth: Int,
     val priceYear: Int
 )
 
 val membershipList = listOf<MembershipItem>(
-    MembershipItem(R.drawable.silvertier, R.string.silverTierDesc, 1500, 14400),
-    MembershipItem(R.drawable.goldtier, R.string.goldTierDesc, 2800, 26800),
-    MembershipItem(R.drawable.platinumtier, R.string.platinumTierDesc, 4500, 43200),
+    MembershipItem(R.drawable.silvertier, R.string.silverTierDesc, 1, 1500, 14400),
+    MembershipItem(R.drawable.goldtier, R.string.goldTierDesc, 2, 2800, 26800),
+    MembershipItem(R.drawable.platinumtier, R.string.platinumTierDesc, 3, 4500, 43200),
 )

@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.greenfitapp.data.newsList
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import com.example.greenfitapp.data.NewsItem
@@ -133,7 +134,7 @@ fun GreenFitAppGreetingText(name: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun NewsCard(newsItem: NewsItem) {
-    Card(
+    ElevatedCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column() {
